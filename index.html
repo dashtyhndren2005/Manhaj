@@ -60,6 +60,8 @@
         .field { margin-bottom: 14px; }
         .field label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 6px; }
         .field input, .field select, .field textarea { width: 100%; padding: 11px 14px; border-radius: 11px; border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text-main); font-size: 14px; }
+        .pdf-hint { display: none; margin-top: 8px; padding: 10px 12px; border-radius: 11px; border: 1px dashed var(--primary); background-color: var(--bg-elevated); font-size: 13px; color: var(--text-muted); line-height: 2; }
+        .pdf-hint a { color: var(--primary); }
     </style>
 </head>
 <body>
@@ -166,7 +168,12 @@
             <input type="url" id="lessonMediaUrl" placeholder="https://...">
         </div>
         <div class="field">
-            <label>لینکی کتێبەکە بە (PDF):</label>
+            <label>فایلی کتێبەکە (PDF) لە ئامێرەکەتەوە هەڵبژێرە:</label>
+            <input type="file" id="lessonPdfFile" accept="application/pdf,.pdf" onchange="handlePdfFile(this)">
+            <div class="pdf-hint" id="pdfHint"></div>
+        </div>
+        <div class="field">
+            <label>یان لینکی PDF بنووسە (ئارەزوومەندانە):</label>
             <input type="url" id="lessonPdfUrl" placeholder="https://.../book.pdf">
         </div>
         <button class="btn-primary" style="width:100%; padding:13px; font-size:16px;" onclick="saveNewLesson()">✓ پاشەکەوتکردن</button>
@@ -225,6 +232,8 @@
     let notesMap = JSON.parse(localStorage.getItem('manhaj_notes_v2')) || {};
     let activeStage = 1;
     let isAdmin = false;
+    let pendingPdfName = '';
+    let pendingPdfBlobUrl = '';
 
     fetch('lessons.json?v=' + Date.now())
         .then(r => r.json())
@@ -338,6 +347,40 @@
         document.getElementById('addModal').style.display = 'none';
     }
 
+    // Picking a PDF: the page cannot store files itself, so it prepares a safe file name,
+    // fills the lesson's book link with it, and shows the two steps needed to upload the file to GitHub.
+    function handlePdfFile(input) {
+        const hint = document.getElementById('pdfHint');
+        const f = input.files && input.files[0];
+        if (pendingPdfBlobUrl) { URL.revokeObjectURL(pendingPdfBlobUrl); pendingPdfBlobUrl = ''; }
+        if (!f) {
+            pendingPdfName = '';
+            hint.style.display = 'none';
+            hint.innerHTML = '';
+            return;
+        }
+        if (f.size > 25 * 1024 * 1024) {
+            alert("ئەم فایلە گەورەترە لە ٢٥ مێگابایت. تکایە فایلێکی بچووکتر هەڵبژێرە.");
+            input.value = '';
+            pendingPdfName = '';
+            hint.style.display = 'none';
+            return;
+        }
+        let safe = f.name.replace(/\s+/g, '-').replace(/[^A-Za-z0-9._-]/g, '');
+        if (!/\.pdf$/i.test(safe) || safe.length < 5) {
+            safe = 'book-' + Date.now() + '.pdf';
+        }
+        pendingPdfName = safe;
+        pendingPdfBlobUrl = URL.createObjectURL(f);
+        document.getElementById('lessonPdfUrl').value = safe;
+        hint.innerHTML =
+            '✓ فایل هەڵبژێردرا و ناوەکەی دەبێت: <strong dir="ltr">' + esc(safe) + '</strong><br>' +
+            '١) <a href="' + pendingPdfBlobUrl + '" download="' + esc(safe) + '">دابەزاندنی فایلەکە بەم ناوە</a><br>' +
+            '٢) <a href="https://github.com/dashtyhndren2005/Manhaj/upload/main" target="_blank" rel="noopener">کردنەوەی GitHub</a>، فایلەکە ڕابکێشە ناوی، و Commit changes دابگرە.<br>' +
+            'پاشان پاشەکەوتکردنی ئەم فۆرمە تەواو بکە.';
+        hint.style.display = 'block';
+    }
+
     function saveNewLesson() {
         if (!isAdmin) return;
         const stage = parseInt(document.getElementById('lessonStage').value);
@@ -358,11 +401,21 @@
         document.getElementById('lessonDesc').value = '';
         document.getElementById('lessonMediaUrl').value = '';
         document.getElementById('lessonPdfUrl').value = '';
+        document.getElementById('lessonPdfFile').value = '';
+        document.getElementById('pdfHint').style.display = 'none';
+        document.getElementById('pdfHint').innerHTML = '';
+        const uploadedName = pendingPdfName;
+        pendingPdfName = '';
+        if (pendingPdfBlobUrl) { URL.revokeObjectURL(pendingPdfBlobUrl); pendingPdfBlobUrl = ''; }
 
         closeAddModal();
         activeStage = stage;
         renderStages();
         renderLessons();
+
+        if (uploadedName) {
+            alert("وانەکە پاشەکەوت کرا. بیرت بێت فایلی " + uploadedName + " لە GitHub بەرز بکەیتەوە، دواتر «کۆپیکردنی داتا» بۆ lessons.json بکە.");
+        }
     }
 
     function deleteLesson(id) {
