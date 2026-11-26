@@ -5,243 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مەنهەج | وانە و کتێبە شەرعییەکان</title>
     <style>
-        @font-face {
-            font-family: 'NRTFont';
-            src: url('NRT-Reg.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        :root {
-            --bg-main: #0b1120;
-            --bg-surface: #1e293b;
-            --bg-elevated: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --danger: #ef4444;
-            --border: #334155;
-            --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.45);
-        }
-
-        [data-theme="light"] {
-            --bg-main: #f1f5f9;
-            --bg-surface: #ffffff;
-            --bg-elevated: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --primary: #059669;
-            --primary-dark: #047857;
-            --danger: #dc2626;
-            --border: #cbd5e1;
-            --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'NRTFont', Tahoma, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            line-height: 1.75;
-            padding-bottom: 70px;
-        }
-
-        header {
-            background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
+        @font-face { font-family: 'NRTFont'; src: url('NRT-Reg.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+        :root { --bg-main: #0b1120; --bg-surface: #1e293b; --bg-elevated: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8; --primary: #10b981; --primary-dark: #059669; --danger: #ef4444; --border: #334155; --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.45); }
+        [data-theme="light"] { --bg-main: #f1f5f9; --bg-surface: #ffffff; --bg-elevated: #f8fafc; --text-main: #0f172a; --text-muted: #475569; --primary: #059669; --primary-dark: #047857; --danger: #dc2626; --border: #cbd5e1; --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'NRTFont', Tahoma, Arial, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.3s ease, color 0.3s ease; line-height: 1.75; padding-bottom: 70px; }
+        header { background-color: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 16px 24px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); flex-wrap: wrap; gap: 12px; }
         .brand { display: flex; align-items: center; gap: 12px; }
-
-        .brand-logo {
-            width: 46px;
-            height: 46px;
-            background: linear-gradient(135deg, #10b981, #047857);
-            color: #ffffff;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
+        .brand-logo { width: 46px; height: 46px; background: linear-gradient(135deg, #10b981, #047857); color: #ffffff; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
         .brand-info h1 { font-size: 23px; color: var(--primary); line-height: 1.2; }
         .brand-info span { font-size: 13px; color: var(--text-muted); }
         .nav-controls { display: flex; align-items: center; gap: 10px; }
-
-        button, .btn {
-            cursor: pointer;
-            border: none;
-            border-radius: 11px;
-            padding: 10px 16px;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            text-decoration: none;
-        }
-
+        button, .btn { cursor: pointer; border: none; border-radius: 11px; padding: 10px 16px; font-size: 14px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 7px; text-decoration: none; }
         .btn-outline { background-color: var(--bg-elevated); color: var(--text-main); border: 1px solid var(--border); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
         .btn-primary { background-color: var(--primary); color: #ffffff; }
         .btn-primary:hover { background-color: var(--primary-dark); }
         .btn-danger { background-color: var(--danger); color: #ffffff; }
-
         .container { max-width: 1024px; margin: 28px auto; padding: 0 18px; }
-
-        .admin-banner {
-            display: none;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08));
-            border: 1px solid var(--primary);
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        .admin-banner { display: none; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08)); border: 1px solid var(--primary); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .admin-banner.active { display: flex; }
-
         .toolbar { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
-
-        .input-control {
-            flex: 1;
-            min-width: 220px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background-color: var(--bg-surface);
-            color: var(--text-main);
-            font-size: 15px;
-            outline: none;
-        }
+        .input-control { flex: 1; min-width: 220px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); background-color: var(--bg-surface); color: var(--text-main); font-size: 15px; outline: none; }
         .input-control:focus { border-color: var(--primary); }
-
         .stages-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
         @media (max-width: 700px) { .stages-grid { grid-template-columns: repeat(2, 1fr); } }
-
-        .stage-btn {
-            background-color: var(--bg-surface);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            padding: 16px 12px;
-            border-radius: 16px;
-            flex-direction: column;
-            gap: 4px;
-            box-shadow: var(--shadow);
-        }
+        .stage-btn { background-color: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border); padding: 16px 12px; border-radius: 16px; flex-direction: column; gap: 4px; box-shadow: var(--shadow); }
         .stage-btn strong { font-size: 17px; color: var(--text-main); }
         .stage-btn span { font-size: 12px; }
         .stage-btn.active { background-color: var(--primary); border-color: var(--primary); color: #ffffff; }
         .stage-btn.active strong { color: #ffffff; }
-
-        .progress-wrapper {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 18px 20px;
-            margin-bottom: 26px;
-            box-shadow: var(--shadow);
-        }
+        .progress-wrapper { background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 26px; box-shadow: var(--shadow); }
         .progress-top { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
         .progress-bar-bg { width: 100%; height: 11px; background-color: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); width: 0%; transition: width 0.4s ease; }
-
         .lessons-list { display: flex; flex-direction: column; gap: 20px; }
-
-        .lesson-card {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 22px;
-            box-shadow: var(--shadow);
-        }
+        .lesson-card { background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px; box-shadow: var(--shadow); }
         .lesson-card.is-watched { border-right: 6px solid var(--primary); }
-
         .lesson-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
         .lesson-title { font-size: 20px; color: var(--text-main); }
         .status-badge { padding: 5px 14px; border-radius: 99px; font-size: 13px; }
         .status-done { background-color: rgba(16, 185, 129, 0.16); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.35); }
         .status-pending { background-color: rgba(148, 163, 184, 0.14); color: var(--text-muted); }
         .lesson-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 18px; }
-
-        .media-container {
-            background-color: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 18px;
-        }
+        .media-container { background-color: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 18px; }
         .media-container iframe, .media-container video { width: 100%; height: 350px; border-radius: 10px; border: none; display: block; }
         .media-container audio { width: 100%; margin-top: 8px; }
-
         .lesson-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); }
         .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
         .student-note { margin-top: 14px; display: none; }
-        .student-note textarea {
-            width: 100%;
-            min-height: 80px;
-            background-color: var(--bg-elevated);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 14px;
-            resize: vertical;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.78);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .modal-box {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            max-width: 520px;
-            width: 100%;
-            max-height: 92vh;
-            overflow-y: auto;
-            padding: 24px;
-        }
+        .student-note textarea { width: 100%; min-height: 80px; background-color: var(--bg-elevated); color: var(--text-main); border: 1px solid var(--border); border-radius: 12px; padding: 12px; font-size: 14px; resize: vertical; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.78); z-index: 999; align-items: center; justify-content: center; padding: 16px; }
+        .modal-box { background-color: var(--bg-surface); border: 1px solid var(--border); border-radius: 22px; max-width: 520px; width: 100%; max-height: 92vh; overflow-y: auto; padding: 24px; }
         .field { margin-bottom: 14px; }
         .field label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 6px; }
-        .field input, .field select, .field textarea {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 11px;
-            border: 1px solid var(--border);
-            background-color: var(--bg-elevated);
-            color: var(--text-main);
-            font-size: 14px;
-        }
+        .field input, .field select, .field textarea { width: 100%; padding: 11px 14px; border-radius: 11px; border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text-main); font-size: 14px; }
     </style>
 </head>
 <body>
@@ -264,11 +82,11 @@
     <div class="admin-banner" id="adminBanner">
         <div>
             <strong style="color:var(--primary); font-size:16px;">🔓 چوویتە ژوورەوە وەک بەڕێوەبەر</strong>
-            <p style="font-size:13px; color:var(--text-muted);">دەتوانیت بۆ هەر قۆناغێک ڤیدیۆ یان دەنگ لەگەڵ کتێب زیاد بکەیت.</p>
+            <p style="font-size:13px; color:var(--text-muted);">وانەی نوێ زیاد بکە، پاشان «کۆپیکردنی داتا» دابگرە و بینێرە بۆ پەیوەندیدار تا بۆ هەموو قوتابیان بڵاو بکرێتەوە.</p>
         </div>
         <div class="btn-group">
             <button class="btn-primary" onclick="openAddModal()">+ زیادکردنی وانە و کتێب</button>
-            <button class="btn-outline" onclick="copyCodeForGitHub()">📋 کۆپیکردنی داتا بۆ GitHub</button>
+            <button class="btn-outline" onclick="copyCodeForGitHub()">📋 کۆپیکردنی داتا (lessons.json)</button>
         </div>
     </div>
 
@@ -318,7 +136,6 @@
             <h2 style="color:var(--primary); font-size:20px;">زیادکردنی وانە و کتێب</h2>
             <button class="btn-outline" onclick="closeAddModal()">✕ داخستن</button>
         </div>
-
         <div class="field">
             <label>قۆناغ دیاری بکە:</label>
             <select id="lessonStage">
@@ -328,17 +145,14 @@
                 <option value="4">قۆناغی چوارەم</option>
             </select>
         </div>
-
         <div class="field">
             <label>ناونیشانی وانە یان ناوی کتێبەکە:</label>
             <input type="text" id="lessonTitle" placeholder="نموونە: کتێبی یەکەم - وانەی یەکەم">
         </div>
-
         <div class="field">
             <label>کورتە و ڕوونکردنەوە:</label>
             <textarea id="lessonDesc" rows="2" placeholder="ڕوونکردنەوەی وانەکە..."></textarea>
         </div>
-
         <div class="field">
             <label>جۆری وانە (ڤیدیۆ یان دەنگ لەگەڵ کتێبەکە):</label>
             <select id="lessonMediaType">
@@ -346,17 +160,14 @@
                 <option value="audio">دەنگ / سەوت (لینکی ڕاستەوخۆی MP3)</option>
             </select>
         </div>
-
         <div class="field">
             <label>لینکی ڤیدیۆ یان دەنگەکە:</label>
             <input type="url" id="lessonMediaUrl" placeholder="https://...">
         </div>
-
         <div class="field">
             <label>لینکی کتێبەکە بە (PDF):</label>
             <input type="url" id="lessonPdfUrl" placeholder="https://.../book.pdf">
         </div>
-
         <button class="btn-primary" style="width:100%; padding:13px; font-size:16px;" onclick="saveNewLesson()">✓ پاشەکەوتکردن</button>
     </div>
 </div>
@@ -382,33 +193,23 @@
         { id: 4, title: "قۆناغی چوارەم" }
     ];
 
-    // Published lessons (paste the data copied from the admin panel here)
-    let initialData = [
-        {
-            id: 1,
-            stage: 1,
-            title: "وانەی یەکەم: کتێبی یەکەم (ڤیدیۆ)",
-            desc: "وانەی ڤیدیۆیی هاوپێچ لەگەڵ کتێبی قۆناغی یەکەم.",
-            mediaType: "video",
-            mediaUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            pdfUrl: "https://example.com/stage1-book1.pdf"
-        },
-        {
-            id: 2,
-            stage: 2,
-            title: "وانەی یەکەم: کتێبی دووەم (دەنگ / سەوت)",
-            desc: "وانەی دەنگی هاوپێچ لەگەڵ کتێبی قۆناغی دووەم.",
-            mediaType: "audio",
-            mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-            pdfUrl: "https://example.com/stage2-book1.pdf"
-        }
-    ];
-
-    let lessons = JSON.parse(localStorage.getItem('manhaj_lessons_v2')) || initialData;
+    // Lessons are shared for everyone: they are loaded from lessons.json in this repository.
+    let publishedLessons = [];
+    let lessons = [];
     let watchedList = JSON.parse(localStorage.getItem('manhaj_watched_v2')) || [];
     let notesMap = JSON.parse(localStorage.getItem('manhaj_notes_v2')) || {};
     let activeStage = 1;
     let isAdmin = false;
+
+    fetch('lessons.json?v=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            publishedLessons = Array.isArray(data) ? data : [];
+            if (!isAdmin) lessons = publishedLessons;
+            renderStages();
+            renderLessons();
+        })
+        .catch(() => { renderStages(); renderLessons(); });
 
     const currentTheme = localStorage.getItem('manhaj_theme_v2') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
@@ -428,8 +229,10 @@
     function handleAdminClick() {
         if (isAdmin) {
             isAdmin = false;
+            lessons = publishedLessons;
             document.getElementById('adminBanner').classList.remove('active');
             document.getElementById('adminBtn').innerText = '🔐 بەڕێوەبەر';
+            renderStages();
             renderLessons();
         } else {
             document.getElementById('loginModal').style.display = 'flex';
@@ -448,13 +251,20 @@
 
         if (hash === ADMIN_PASSWORD_HASH) {
             isAdmin = true;
+            const draft = JSON.parse(localStorage.getItem('manhaj_draft_v3') || 'null');
+            lessons = draft || publishedLessons.slice();
             closeLoginModal();
             document.getElementById('adminBanner').classList.add('active');
             document.getElementById('adminBtn').innerText = '🚪 دەرچوون';
+            renderStages();
             renderLessons();
         } else {
             alert("وشەی نهێنی هەڵەیە!");
         }
+    }
+
+    function saveDraft() {
+        localStorage.setItem('manhaj_draft_v3', JSON.stringify(lessons));
     }
 
     function openAddModal() {
@@ -481,8 +291,7 @@
         }
 
         lessons.push({ id: Date.now(), stage, title, desc, mediaType, mediaUrl, pdfUrl });
-
-        localStorage.setItem('manhaj_lessons_v2', JSON.stringify(lessons));
+        saveDraft();
         document.getElementById('lessonTitle').value = '';
         document.getElementById('lessonDesc').value = '';
         document.getElementById('lessonMediaUrl').value = '';
@@ -498,7 +307,7 @@
         if (!isAdmin) return;
         if (confirm("دڵنیایت لە سڕینەوەی ئەم بابەتە؟")) {
             lessons = lessons.filter(item => item.id !== id);
-            localStorage.setItem('manhaj_lessons_v2', JSON.stringify(lessons));
+            saveDraft();
             renderStages();
             renderLessons();
         }
@@ -636,9 +445,8 @@
     }
 
     function copyCodeForGitHub() {
-        const exportString = `let initialData = ${JSON.stringify(lessons, null, 4)};`;
-        navigator.clipboard.writeText(exportString).then(() => {
-            alert("داتاکە کۆپی کرا! لەناو فایلی index.html لە GitHub بیخە شوێنی initialData.");
+        navigator.clipboard.writeText(JSON.stringify(lessons, null, 4)).then(() => {
+            alert("داتاکە کۆپی کرا! بینێرە بۆ پەیوەندیدار یان لە GitHub فایلی lessons.json بگۆڕە.");
         });
     }
 
