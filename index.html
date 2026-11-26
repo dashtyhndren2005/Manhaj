@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مەنهەج | وانە و کتێبە شەرعییەکان</title>
+    <style>
+        @font-face {
+            font-family: 'NRTFont';
+            src: url('NRT-Reg.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --bg-main: #0b1120;
+            --bg-surface: #1e293b;
+            --bg-elevated: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --danger: #ef4444;
+            --border: #334155;
+            --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.45);
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-elevated: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #059669;
+            --primary-dark: #047857;
+            --danger: #dc2626;
+            --border: #cbd5e1;
+            --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'NRTFont', Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.75;
+            padding-bottom: 70px;
+        }
+
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; }
+
+        .brand-logo {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: #ffffff;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .brand-info h1 { font-size: 23px; color: var(--primary); line-height: 1.2; }
+        .brand-info span { font-size: 13px; color: var(--text-muted); }
+        .nav-controls { display: flex; align-items: center; gap: 10px; }
+
+        button, .btn {
+            cursor: pointer;
+            border: none;
+            border-radius: 11px;
+            padding: 10px 16px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            text-decoration: none;
+        }
+
+        .btn-outline { background-color: var(--bg-elevated); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-primary { background-color: var(--primary); color: #ffffff; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-danger { background-color: var(--danger); color: #ffffff; }
+
+        .container { max-width: 1024px; margin: 28px auto; padding: 0 18px; }
+
+        .admin-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08));
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-banner.active { display: flex; }
+
+        .toolbar { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+
+        .input-control {
+            flex: 1;
+            min-width: 220px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-surface);
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+        }
+        .input-control:focus { border-color: var(--primary); }
+
+        .stages-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        @media (max-width: 700px) { .stages-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .stage-btn {
+            background-color: var(--bg-surface);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 16px 12px;
+            border-radius: 16px;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: var(--shadow);
+        }
+        .stage-btn strong { font-size: 17px; color: var(--text-main); }
+        .stage-btn span { font-size: 12px; }
+        .stage-btn.active { background-color: var(--primary); border-color: var(--primary); color: #ffffff; }
+        .stage-btn.active strong { color: #ffffff; }
+
+        .progress-wrapper {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 26px;
+            box-shadow: var(--shadow);
+        }
+        .progress-top { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+        .progress-bar-bg { width: 100%; height: 11px; background-color: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); width: 0%; transition: width 0.4s ease; }
+
+        .lessons-list { display: flex; flex-direction: column; gap: 20px; }
+
+        .lesson-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+        }
+        .lesson-card.is-watched { border-right: 6px solid var(--primary); }
+
+        .lesson-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+        .lesson-title { font-size: 20px; color: var(--text-main); }
+        .status-badge { padding: 5px 14px; border-radius: 99px; font-size: 13px; }
+        .status-done { background-color: rgba(16, 185, 129, 0.16); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.35); }
+        .status-pending { background-color: rgba(148, 163, 184, 0.14); color: var(--text-muted); }
+        .lesson-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 18px; }
+
+        .media-container {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 18px;
+        }
+        .media-container iframe, .media-container video { width: 100%; height: 350px; border-radius: 10px; border: none; display: block; }
+        .media-container audio { width: 100%; margin-top: 8px; }
+
+        .lesson-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .student-note { margin-top: 14px; display: none; }
+        .student-note textarea {
+            width: 100%;
+            min-height: 80px;
+            background-color: var(--bg-elevated);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.78);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-box {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .field { margin-bottom: 14px; }
+        .field label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 6px; }
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-elevated);
+            color: var(--text-main);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">
+        <div class="brand-logo">م</div>
+        <div class="brand-info">
+            <h1>مەنهەج</h1>
+            <span>وانە و کتێبە شەرعییەکان</span>
+        </div>
+    </div>
+    <div class="nav-controls">
+        <button class="btn-outline" onclick="toggleTheme()" id="themeToggleBtn">☀️ دۆخی ڕووناک</button>
+        <button class="btn-outline" onclick="handleAdminClick()" id="adminBtn">🔐 بەڕێوەبەر</button>
+    </div>
+</header>
+
+<div class="container">
+    <div class="admin-banner" id="adminBanner">
+        <div>
+            <strong style="color:var(--primary); font-size:16px;">🔓 چوویتە ژوورەوە وەک بەڕێوەبەر</strong>
+            <p style="font-size:13px; color:var(--text-muted);">دەتوانیت بۆ هەر قۆناغێک ڤیدیۆ یان دەنگ لەگەڵ کتێب زیاد بکەیت.</p>
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="openAddModal()">+ زیادکردنی وانە و کتێب</button>
+            <button class="btn-outline" onclick="copyCodeForGitHub()">📋 کۆپیکردنی داتا بۆ GitHub</button>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <input type="text" id="searchBox" class="input-control" placeholder="گەڕان بەدوای ناوی کتێب یان وانە..." oninput="renderLessons()">
+        <select id="statusFilter" class="input-control" style="max-width: 190px;" onchange="renderLessons()">
+            <option value="all">هەموو وانەکان</option>
+            <option value="watched">سەیرکراوەکان ✓</option>
+            <option value="unwatched">سەیرنەکراوەکان</option>
+        </select>
+    </div>
+
+    <div class="stages-grid" id="stagesContainer"></div>
+
+    <div class="progress-wrapper">
+        <div class="progress-top">
+            <span id="progressLabel">پێشکەوتن لە قۆناغی یەکەم</span>
+            <strong id="progressValue" style="color:var(--primary);">0%</strong>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="lessons-list" id="lessonsContainer"></div>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <h2 style="color:var(--primary); font-size:20px;">چوونەژوورەوەی بەڕێوەبەر</h2>
+            <button class="btn-outline" onclick="closeLoginModal()">✕ داخستن</button>
+        </div>
+        <form onsubmit="submitAdminLogin(event)">
+            <div class="field">
+                <label>وشەی نهێنی:</label>
+                <input type="password" id="loginPassword" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%; padding:12px; font-size:15px;">چوونە ژوورەوە</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <h2 style="color:var(--primary); font-size:20px;">زیادکردنی وانە و کتێب</h2>
+            <button class="btn-outline" onclick="closeAddModal()">✕ داخستن</button>
+        </div>
+
+        <div class="field">
+            <label>قۆناغ دیاری بکە:</label>
+            <select id="lessonStage">
+                <option value="1">قۆناغی یەکەم</option>
+                <option value="2">قۆناغی دووەم</option>
+                <option value="3">قۆناغی سێیەم</option>
+                <option value="4">قۆناغی چوارەم</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>ناونیشانی وانە یان ناوی کتێبەکە:</label>
+            <input type="text" id="lessonTitle" placeholder="نموونە: کتێبی یەکەم - وانەی یەکەم">
+        </div>
+
+        <div class="field">
+            <label>کورتە و ڕوونکردنەوە:</label>
+            <textarea id="lessonDesc" rows="2" placeholder="ڕوونکردنەوەی وانەکە..."></textarea>
+        </div>
+
+        <div class="field">
+            <label>جۆری وانە (ڤیدیۆ یان دەنگ لەگەڵ کتێبەکە):</label>
+            <select id="lessonMediaType">
+                <option value="video">ڤیدیۆ (YouTube یان لینکی ڕاستەوخۆی MP4)</option>
+                <option value="audio">دەنگ / سەوت (لینکی ڕاستەوخۆی MP3)</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>لینکی ڤیدیۆ یان دەنگەکە:</label>
+            <input type="url" id="lessonMediaUrl" placeholder="https://...">
+        </div>
+
+        <div class="field">
+            <label>لینکی کتێبەکە بە (PDF):</label>
+            <input type="url" id="lessonPdfUrl" placeholder="https://.../book.pdf">
+        </div>
+
+        <button class="btn-primary" style="width:100%; padding:13px; font-size:16px;" onclick="saveNewLesson()">✓ پاشەکەوتکردن</button>
+    </div>
+</div>
+
+<script>
+    // SHA-256 hash of the admin password (the password itself is not stored in the page).
+    const ADMIN_PASSWORD_HASH = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92";
+
+    async function sha256Hex(text) {
+        const data = new TextEncoder().encode(text);
+        const buf = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    const stages = [
+        { id: 1, title: "قۆناغی یەکەم" },
+        { id: 2, title: "قۆناغی دووەم" },
+        { id: 3, title: "قۆناغی سێیەم" },
+        { id: 4, title: "قۆناغی چوارەم" }
+    ];
+
+    // Published lessons (paste the data copied from the admin panel here)
+    let initialData = [
+        {
+            id: 1,
+            stage: 1,
+            title: "وانەی یەکەم: کتێبی یەکەم (ڤیدیۆ)",
+            desc: "وانەی ڤیدیۆیی هاوپێچ لەگەڵ کتێبی قۆناغی یەکەم.",
+            mediaType: "video",
+            mediaUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            pdfUrl: "https://example.com/stage1-book1.pdf"
+        },
+        {
+            id: 2,
+            stage: 2,
+            title: "وانەی یەکەم: کتێبی دووەم (دەنگ / سەوت)",
+            desc: "وانەی دەنگی هاوپێچ لەگەڵ کتێبی قۆناغی دووەم.",
+            mediaType: "audio",
+            mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            pdfUrl: "https://example.com/stage2-book1.pdf"
+        }
+    ];
+
+    let lessons = JSON.parse(localStorage.getItem('manhaj_lessons_v2')) || initialData;
+    let watchedList = JSON.parse(localStorage.getItem('manhaj_watched_v2')) || [];
+    let notesMap = JSON.parse(localStorage.getItem('manhaj_notes_v2')) || {};
+    let activeStage = 1;
+    let isAdmin = false;
+
+    const currentTheme = localStorage.getItem('manhaj_theme_v2') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateThemeButton(currentTheme);
+
+    function toggleTheme() {
+        const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('manhaj_theme_v2', theme);
+        updateThemeButton(theme);
+    }
+
+    function updateThemeButton(theme) {
+        document.getElementById('themeToggleBtn').innerText = theme === 'dark' ? '☀️ دۆخی ڕووناک' : '🌙 دۆخی تاریک';
+    }
+
+    function handleAdminClick() {
+        if (isAdmin) {
+            isAdmin = false;
+            document.getElementById('adminBanner').classList.remove('active');
+            document.getElementById('adminBtn').innerText = '🔐 بەڕێوەبەر';
+            renderLessons();
+        } else {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+    }
+
+    function closeLoginModal() {
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('loginPassword').value = '';
+    }
+
+    async function submitAdminLogin(e) {
+        e.preventDefault();
+        const pass = document.getElementById('loginPassword').value;
+        const hash = await sha256Hex(pass);
+
+        if (hash === ADMIN_PASSWORD_HASH) {
+            isAdmin = true;
+            closeLoginModal();
+            document.getElementById('adminBanner').classList.add('active');
+            document.getElementById('adminBtn').innerText = '🚪 دەرچوون';
+            renderLessons();
+        } else {
+            alert("وشەی نهێنی هەڵەیە!");
+        }
+    }
+
+    function openAddModal() {
+        document.getElementById('lessonStage').value = activeStage;
+        document.getElementById('addModal').style.display = 'flex';
+    }
+
+    function closeAddModal() {
+        document.getElementById('addModal').style.display = 'none';
+    }
+
+    function saveNewLesson() {
+        if (!isAdmin) return;
+        const stage = parseInt(document.getElementById('lessonStage').value);
+        const title = document.getElementById('lessonTitle').value.trim();
+        const desc = document.getElementById('lessonDesc').value.trim();
+        const mediaType = document.getElementById('lessonMediaType').value;
+        const mediaUrl = document.getElementById('lessonMediaUrl').value.trim();
+        const pdfUrl = document.getElementById('lessonPdfUrl').value.trim();
+
+        if (!title) {
+            alert("تکایە ناونیشانی وانە یان کتێبەکە بنووسە.");
+            return;
+        }
+
+        lessons.push({ id: Date.now(), stage, title, desc, mediaType, mediaUrl, pdfUrl });
+
+        localStorage.setItem('manhaj_lessons_v2', JSON.stringify(lessons));
+        document.getElementById('lessonTitle').value = '';
+        document.getElementById('lessonDesc').value = '';
+        document.getElementById('lessonMediaUrl').value = '';
+        document.getElementById('lessonPdfUrl').value = '';
+
+        closeAddModal();
+        activeStage = stage;
+        renderStages();
+        renderLessons();
+    }
+
+    function deleteLesson(id) {
+        if (!isAdmin) return;
+        if (confirm("دڵنیایت لە سڕینەوەی ئەم بابەتە؟")) {
+            lessons = lessons.filter(item => item.id !== id);
+            localStorage.setItem('manhaj_lessons_v2', JSON.stringify(lessons));
+            renderStages();
+            renderLessons();
+        }
+    }
+
+    function renderStages() {
+        const container = document.getElementById('stagesContainer');
+        container.innerHTML = stages.map(st => {
+            const count = lessons.filter(l => l.stage === st.id).length;
+            return `
+                <button class="stage-btn ${activeStage === st.id ? 'active' : ''}" onclick="switchStage(${st.id})">
+                    <strong>${st.title}</strong>
+                    <span>${count} بابەت</span>
+                </button>
+            `;
+        }).join('');
+    }
+
+    function switchStage(id) {
+        activeStage = id;
+        renderStages();
+        renderLessons();
+    }
+
+    function formatYoutubeEmbed(url) {
+        if (url.includes('youtube.com/watch?v=')) {
+            return url.replace('watch?v=', 'embed/').split('&')[0];
+        }
+        if (url.includes('youtu.be/')) {
+            return url.replace('youtu.be/', 'www.youtube.com/embed/');
+        }
+        return url;
+    }
+
+    function renderLessons() {
+        const container = document.getElementById('lessonsContainer');
+        const query = document.getElementById('searchBox').value.toLowerCase();
+        const filter = document.getElementById('statusFilter').value;
+
+        const stageItems = lessons.filter(l => l.stage === activeStage);
+        const completedCount = stageItems.filter(l => watchedList.includes(l.id)).length;
+        const percentage = stageItems.length > 0 ? Math.round((completedCount / stageItems.length) * 100) : 0;
+
+        const currentStageObj = stages.find(s => s.id === activeStage);
+        document.getElementById('progressLabel').innerText = `پێشکەوتن لە ${currentStageObj.title} (${completedCount} لە ${stageItems.length} سەیرکراوە)`;
+        document.getElementById('progressValue').innerText = `${percentage}%`;
+        document.getElementById('progressBar').style.width = `${percentage}%`;
+
+        const visibleItems = stageItems.filter(l => {
+            const matchText = l.title.toLowerCase().includes(query) || (l.desc || '').toLowerCase().includes(query);
+            const isDone = watchedList.includes(l.id);
+            if (filter === 'watched' && !isDone) return false;
+            if (filter === 'unwatched' && isDone) return false;
+            return matchText;
+        });
+
+        if (visibleItems.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:45px; color:var(--text-muted); background:var(--bg-surface); border-radius:16px; border:1px solid var(--border);">هیچ وانە و کتێبێک لەم قۆناغەدا نییە.</div>`;
+            return;
+        }
+
+        container.innerHTML = visibleItems.map(item => {
+            const isWatched = watchedList.includes(item.id);
+            let mediaBlock = '';
+
+            if (item.mediaUrl) {
+                const url = esc(item.mediaUrl);
+                if (item.mediaType === 'video') {
+                    if (item.mediaUrl.includes('youtube') || item.mediaUrl.includes('youtu.be')) {
+                        mediaBlock = `<div class="media-container"><iframe src="${esc(formatYoutubeEmbed(item.mediaUrl))}" allowfullscreen></iframe></div>`;
+                    } else {
+                        mediaBlock = `<div class="media-container"><video controls src="${url}" onended="autoComplete(${item.id})"></video></div>`;
+                    }
+                } else if (item.mediaType === 'audio') {
+                    mediaBlock = `<div class="media-container"><span style="font-size:13px; color:var(--text-muted);">🎧 دەنگ / سەوتی هاوپێچ لەگەڵ کتێبەکە:</span><audio controls src="${url}" onended="autoComplete(${item.id})"></audio></div>`;
+                }
+            }
+
+            return `
+                <div class="lesson-card ${isWatched ? 'is-watched' : ''}">
+                    <div class="lesson-header">
+                        <h3 class="lesson-title">${esc(item.title)}</h3>
+                        ${isWatched 
+                            ? '<span class="status-badge status-done">✓ سەیرکراوە</span>' 
+                            : '<span class="status-badge status-pending">سەیر نەکراوە</span>'}
+                    </div>
+                    <p class="lesson-desc">${esc(item.desc)}</p>
+                    ${mediaBlock}
+                    <div class="lesson-footer">
+                        <div class="btn-group">
+                            <button class="${isWatched ? 'btn-outline' : 'btn-primary'}" onclick="toggleWatchedStatus(${item.id})">
+                                ${isWatched ? '↺ لابردنی نیشانەی سەیرکراو' : '✓ نیشانەکردن وەک سەیرکراو'}
+                            </button>
+                            ${item.pdfUrl ? `<a href="${esc(item.pdfUrl)}" target="_blank" rel="noopener" download class="btn btn-danger">📄 دابەزاندنی کتێب (PDF)</a>` : ''}
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-outline" onclick="toggleStudentNote(${item.id})">📝 تێبینییەکانم</button>
+                            ${isAdmin ? `<button class="btn-outline" style="color:var(--danger); border-color:var(--danger);" onclick="deleteLesson(${item.id})">🗑️ سڕینەوە</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="student-note" id="note-box-${item.id}">
+                        <textarea placeholder="تێبینییەکانت لەسەر ئەم وانەیە لێرە بنووسە..." oninput="saveStudentNote(${item.id}, this.value)">${esc(notesMap[item.id] || '')}</textarea>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function toggleWatchedStatus(id) {
+        if (watchedList.includes(id)) {
+            watchedList = watchedList.filter(x => x !== id);
+        } else {
+            watchedList.push(id);
+        }
+        localStorage.setItem('manhaj_watched_v2', JSON.stringify(watchedList));
+        renderLessons();
+    }
+
+    function autoComplete(id) {
+        if (!watchedList.includes(id)) {
+            watchedList.push(id);
+            localStorage.setItem('manhaj_watched_v2', JSON.stringify(watchedList));
+            renderLessons();
+        }
+    }
+
+    function toggleStudentNote(id) {
+        const box = document.getElementById(`note-box-${id}`);
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function saveStudentNote(id, value) {
+        notesMap[id] = value;
+        localStorage.setItem('manhaj_notes_v2', JSON.stringify(notesMap));
+    }
+
+    function copyCodeForGitHub() {
+        const exportString = `let initialData = ${JSON.stringify(lessons, null, 4)};`;
+        navigator.clipboard.writeText(exportString).then(() => {
+            alert("داتاکە کۆپی کرا! لەناو فایلی index.html لە GitHub بیخە شوێنی initialData.");
+        });
+    }
+
+    renderStages();
+    renderLessons();
+</script>
+</body>
+</html>
