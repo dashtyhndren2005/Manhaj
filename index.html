@@ -87,6 +87,7 @@
         <div class="btn-group">
             <button class="btn-primary" onclick="openAddModal()">+ زیادکردنی وانە و کتێب</button>
             <button class="btn-outline" onclick="copyCodeForGitHub()">📋 کۆپیکردنی داتا (lessons.json)</button>
+            <button class="btn-outline" onclick="openPasswordTool()">🔑 گۆڕینی وشەی نهێنی</button>
         </div>
     </div>
 
@@ -169,6 +170,30 @@
             <input type="url" id="lessonPdfUrl" placeholder="https://.../book.pdf">
         </div>
         <button class="btn-primary" style="width:100%; padding:13px; font-size:16px;" onclick="saveNewLesson()">✓ پاشەکەوتکردن</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="pwModal">
+    <div class="modal-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <h2 style="color:var(--primary); font-size:20px;">گۆڕینی وشەی نهێنی</h2>
+            <button class="btn-outline" onclick="closePasswordTool()">✕ داخستن</button>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">وشەی نهێنی نوێ بنووسە (لانیکەم ١٤ پیت، لەگەڵ ژمارە و هێما). وشەکە لە هیچ شوێنێک پاشەکەوت ناکرێت و نانێردرێت، تەنها کۆدی هاش دروست دەکرێت.</p>
+        <div class="field">
+            <label>وشەی نهێنی نوێ:</label>
+            <input type="password" id="newPassword" autocomplete="new-password" placeholder="••••••••••••••">
+        </div>
+        <div class="field">
+            <label>دووبارەکردنەوەی وشەی نهێنی:</label>
+            <input type="password" id="newPassword2" autocomplete="new-password" placeholder="••••••••••••••">
+        </div>
+        <button class="btn-primary" style="width:100%; padding:12px; font-size:15px; margin-bottom:14px;" onclick="generatePasswordHash()">دروستکردنی کۆدی هاش</button>
+        <div class="field" id="hashResultBox" style="display:none;">
+            <label>کۆدی هاش (ئەمە کۆپی بکە و بینێرە بۆ The Maestro):</label>
+            <textarea id="hashResult" rows="3" readonly style="direction:ltr; text-align:left;"></textarea>
+            <button class="btn-outline" style="width:100%; margin-top:8px;" onclick="copyHashResult()">📋 کۆپیکردنی کۆدی هاش</button>
+        </div>
     </div>
 </div>
 
@@ -261,6 +286,43 @@
         } else {
             alert("وشەی نهێنی هەڵەیە!");
         }
+    }
+
+    function openPasswordTool() {
+        if (!isAdmin) return;
+        document.getElementById('pwModal').style.display = 'flex';
+    }
+
+    function closePasswordTool() {
+        document.getElementById('pwModal').style.display = 'none';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('newPassword2').value = '';
+        document.getElementById('hashResult').value = '';
+        document.getElementById('hashResultBox').style.display = 'none';
+    }
+
+    async function generatePasswordHash() {
+        if (!isAdmin) return;
+        const p1 = document.getElementById('newPassword').value;
+        const p2 = document.getElementById('newPassword2').value;
+        if (p1.length < 14) {
+            alert("وشەی نهێنی دەبێت لانیکەم ١٤ پیت بێت.");
+            return;
+        }
+        if (p1 !== p2) {
+            alert("دوو وشەکە وەک یەک نین.");
+            return;
+        }
+        const hash = await sha256Hex(p1);
+        document.getElementById('hashResult').value = hash;
+        document.getElementById('hashResultBox').style.display = 'block';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('newPassword2').value = '';
+    }
+
+    function copyHashResult() {
+        const value = document.getElementById('hashResult').value;
+        navigator.clipboard.writeText(value).then(() => alert("کۆدی هاش کۆپی کرا!"));
     }
 
     function saveDraft() {
